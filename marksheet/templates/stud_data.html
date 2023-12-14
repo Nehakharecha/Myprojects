@@ -1,0 +1,189 @@
+
+    {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }   
+       
+        table {
+            width: 80%;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        td {
+            padding: 15px;
+            text-align: left;
+            
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            background-color: #3498db; 
+            color: white; 
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        a{
+            color: white;
+            text-decoration: none;
+        }
+        button:hover {
+            background-color: #2279e3;
+        }
+        h3 {
+            color: #216592;
+            text-align: center;
+            font-size: xx-large;
+            margin-bottom: 20px;
+        }
+        .search-form {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin-left: 1030px; 
+        }
+
+        .search-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-align: left;
+            margin-left: 115px;
+            color: #216592;
+        }
+
+        .search-input {
+            width: 35%;            
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .search-input:focus {
+            border-color: #45a049; 
+            outline: none;
+        }
+
+        .search-button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color:#2279e3;
+        }
+
+        .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 100vh;
+        }
+        .add_stud{
+            margin-left: 150px;
+            display: flex;  
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        
+    </script>
+</head>
+<body>
+  <center>
+  
+    {% block content %}
+   
+   
+        <h3>Students Data</h3>    
+
+        <div class="add_stud">
+            <button name="ins"><a href="{% url 'insert_data' %}">Add Student</a></button>
+        </div>  
+        <form method="post" action="{% url 'search_data' %}">
+       
+         {% csrf_token %}
+        <div class="search-container">
+            <label for="id_to_search" class="search-label">Search:</label>
+            <input type="text" id="search_name" name="search_name" class="search-input" required>
+            <button type="submit" class="search-button">Search</button>        
+        </div>
+    </form>
+        <table border="2">
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>DOB</th>
+                <th>Action</th>
+                
+            </tr>
+
+            {% for x in mydata %}
+            <tr>
+                <td>{{ x.id }}</td>     
+                <td>{{ x.firstname }} {{ x.lastname }}</td>                
+                <td>{{ x.email }}</td>      
+                <td>{{ x.phone }}
+                    
+                </td>                
+                <td>{{ x.dob|date:"Y/m/d" }}</td>
+                
+                    <td width="16%"><button name="del" ><a href="{% url 'delete_data' item_id2=x.id %}"> Delete</a></button>&nbsp;&nbsp;&nbsp;
+                   
+                    <button name="upd"><a href="{% url 'update_data' item_id=x.id %}">Update</a></button></td>
+               </td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                 </tr>
+        </table>
+   
+    </center>
+</form>
+{% endblock %}
+</body>
+</html>
